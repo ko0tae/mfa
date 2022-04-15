@@ -1,3 +1,8 @@
+# mfa 적용시 aws credentials 관리 도구
+
+interactive mfa 로그인과 `aws sts get-session-token` 명령어를 사용, aws profile의 생성/편집 기능을 제공합니다.
+
+
 ### 사전조건
 
 - nodejs가 설치 되어 있어야 함
@@ -17,7 +22,7 @@
 1. 기존 profile명에 `mfa:`를 추가해준다.
 2. mfa arn 을 `mfa:arn` key로 추가한다.
 
-변경전
+- 변경전
 
 ```
 [myaws]
@@ -25,7 +30,7 @@ aws_access_key_id=...
 aws_secret_access_key=...
 ```
 
-변경후
+- 변경후
 
 ```
 [mfa:myaws]
