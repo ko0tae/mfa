@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "ini": "^3.0.0",
+    "inquirer": "^8.2.2"
+  }
+}
