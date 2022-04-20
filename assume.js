@@ -84,15 +84,15 @@ function add(profile, id, key, token, exp) {
 }
 
 function sts(profile) {
-	var role_arn = config[profile]['assume@role-arn'];
-	var role_session_name = config[profile]['assume@role-session-name'];
-	var profile_from = config[profile]['assume@profile-from'];
+	var role_arn = config[profile]['assume@role_arn'];
+	var role_session_name = config[profile]['assume@role_session_name'];
+	var source_profile = config[profile]['assume@source_profile'];
 
 	var cmdrun = spawnSync('aws',
 		['sts', 'assume-role',
 			'--role-arn', role_arn,
 			'--role-session-name', role_session_name,
-			'--profile', profile_from
+			'--profile', source_profile
 		]);
 	if (cmdrun.status == 0) {
 		return JSON.parse(cmdrun.stdout.toString('utf-8'));
