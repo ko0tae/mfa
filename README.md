@@ -41,7 +41,7 @@ mfa@arn=arn:aws:iam::...:mfa/...@...
 
 #### 예시#2 : `./mfa.js` 명령어 실행후 생성 결과 예시
 
-credentials file의 `[mfa@myaws]`로 `[myaws]` 을 생성한다.
+credentials file의 `[mfa@myaws]`로 `[myaws]` 를 생성한다.
 
 ```
 [mfa@myaws]
@@ -54,4 +54,24 @@ aws_access_key_id=...
 aws_secret_access_key=...
 aws_session_token=...
 mfa@expiration=2022-04-15T12:00:00Z
+```
+
+
+
+
+### assume role 기능 추가
+
+credentials file의 `[assume@youraws]`로 `[youraws]` 를 생성한다.
+
+```
+[assume@youraws]
+assume@role_arn=...
+assume@source_profile=...
+assume@role_session_name=...
+
+[youraws]
+aws_access_key_id=...
+aws_secret_access_key=...
+aws_session_token=...
+assume@expiration=2022-04-15T12:00:00Z
 ```
