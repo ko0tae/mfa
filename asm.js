@@ -21,7 +21,7 @@ function main() {
 		message: "profile",
 		loop: false,
 		choices: pfs,
-		filter: function (val) {
+		filter: function(val) {
 			return val;
 		}
 	}
@@ -30,6 +30,10 @@ function main() {
 	inquirer.prompt(questions).then((answers) => {
 		var profile = answers.profile;
 		login(profile);
+		var profile_new = list_assume_profile();
+		for (var i = 0; i < profile_new.length; i++) {
+			console.log(profile_new[i].name);
+		}
 	});
 
 }
@@ -42,21 +46,21 @@ function login(profile, number) {
 		return 1;
 	}
 
-	console.log("\n\n### sts");
-	console.log(obj);
+	//	console.log("\n\n### sts");
+	//	console.log(obj);
 
 	var id = obj.Credentials.AccessKeyId;
 	var key = obj.Credentials.SecretAccessKey;
 	var token = obj.Credentials.SessionToken;
 	var exp = obj.Credentials.Expiration;
 
-	console.log("\n\n### before");
-	console.log(ini.stringify(config));
+	//	console.log("\n\n### before");
+	//	console.log(ini.stringify(config));
 
 	add(profile.replace('assume@', ''), id, key, token, exp);
 
-	console.log("\n\n### after");
-	console.log(ini.stringify(config));
+	//	console.log("\n\n### after");
+	//	console.log(ini.stringify(config));
 
 	fs.writeFileSync(CRED_FILE_PATH, ini.stringify(config));
 }
@@ -65,7 +69,24 @@ function list_assume_profile() {
 	var profiles = [];
 	for (var key of Object.keys(config)) {
 		if (key.startsWith('assume@')) {
-			profiles.push(key);
+			var expire_info = "";
+			var profile_old = config[key.replace('assume@', '')];
+			if (profile_old && profile_old['assume@expiration']) {
+				var now = new Date();
+				var expire = new Date(profile_old['assume@expiration']);
+				var diff = parseInt((expire - now) / 1000);
+				if (diff > 0) {
+					var h = parseInt((diff / 3600));
+					var m = parseInt((diff % 3600) / 60);
+					var s = parseInt(diff % 60);
+					expire_info = "\t: " + h + " hour " + m + " min " + s + " sec remains";
+				} else {
+					expire_info = "\t: expired!";
+				}
+			} else {
+				expire_info = "\t: unknown";
+			}
+			profiles.push({ name: key + expire_info, value: key });
 		}
 	}
 
